@@ -1,8 +1,6 @@
 import React from "react";
 import { Anton } from "next/font/google";
 import TopgameGrid from "./Topgamegrid/topgamegrid";
-import { cardsData } from "../../card";
-import FlipCard from "./Topgamegrid/HoverCard";
 
 // Import the Anton font
 const anton = Anton({

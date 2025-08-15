@@ -7,14 +7,9 @@ export default function page() {
   return (
     <div>
       <MainHeader />
+      <LatestGame />
       <TopGame />
       <SafeFeatures />
-      <div className="w-full h-screen bg-white ">
-        <h1 className="text-2xl md:text-4xl lg:text-6xl">
-          
-        </h1>
-        <LatestGame />
-      </div>
     </div>
   );
 }
