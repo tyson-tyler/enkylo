@@ -6,6 +6,7 @@ const nextConfig = {
       "orig05.deviantart.net",
       "img.lum.dolimg.com",
       "pre07.deviantart.net",
+      "image-5.uhdpaper.com",
     ],
   },
 };
