@@ -5,15 +5,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function page() {
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
-
+  const [status, setStatus] =
+    (useState < "loading") | "success" | ("error" > "loading");
+  const router = useRouter();
 
   useEffect(() => {
     // Appwrite automatically appends `userId` & `secret` in query params
     const url = new URL(window.location.href);
     const userId = url.searchParams.get("userId");
     const secret = url.searchParams.get("secret");
-    const router = useRouter();
+
     if (!userId || !secret) {
       setStatus("error");
       return;
