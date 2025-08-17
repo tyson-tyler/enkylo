@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function page() {
-  const [status, setStatus] =
-    (useState < "loading") | "success" | ("error" > "loading");
   const router = useRouter();
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Appwrite automatically appends `userId` & `secret` in query params
@@ -22,8 +22,10 @@ export default function page() {
 
     const verify = async () => {
       try {
+        setLoading(true);
         await account.updateVerification(userId, secret);
         setStatus("success");
+        setLoading(false);
         router.push("/dashboard");
       } catch (error) {
         console.error("Verification error:", err);
@@ -35,7 +37,7 @@ export default function page() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center p-6">
-      {status === "loading" && (
+      {loading && (
         <>
           <Loader className="w-10 h-10 text-red-500 animate-spin mb-4" />
           <p className="text-gray-600">Verifying your email...</p>
