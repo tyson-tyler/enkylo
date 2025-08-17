@@ -1,6 +1,7 @@
 "use client";
 
 import { account } from "@/appwrite";
+import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 

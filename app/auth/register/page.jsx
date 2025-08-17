@@ -14,7 +14,7 @@ const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [rstate, setRstate] = useState(3);
+  const [rstate, setRstate] = useState(1);
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [fileshow, setFileShow] = useState("");
@@ -105,6 +105,7 @@ const Page = () => {
         "http://localhost:3000/auth/verify"
       );
       console.log(result);
+      setRstate(3);
       return user;
     } catch (error) {
       console.log(error);
@@ -285,14 +286,27 @@ const Page = () => {
           )}
           {rstate == 3 && (
             <div className="flex flex-col gap-4 justify-center items-center">
-              <motion.div
-                className="relative w-40 h-40 sm:w-48 sm:h-48  
-                 rounded-full border-4 border-red-500 
-                 overflow-hidden cursor-pointer flex items-center justify-center mb-4"
-                onClick={() => fileInputRef.current.click()} // ✅ trigger hidden file input
-              ></motion.div>
+              {/* Circle Placeholder */}
+              <motion.div>
+                <Image
+                  src={"/email.gif"}
+                  width={400}
+                  height={500}
+                  className="w-[100px] h-[100px] md:w-[120px] md:h-[120px] lg:w-[160px] lg:h-[160px]"
+                />
+              </motion.div>
 
-              {/* Register button */}
+              {/* Email confirmation text */}
+              <h2 className="text-xl font-semibold text-white">
+                Check your email
+              </h2>
+              <p className="text-gray-600 text-center max-w-sm">
+                We’ve sent a confirmation link to your email. Please verify to
+                continue.
+              </p>
+
+              {/* Resend button (enabled after 5s) */}
+              {/* <ResendVerification /> */}
             </div>
           )}
 
