@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function page() {
-  const [status, setStatus] =
-    (useState < "loading") | "success" | ("error" > "loading");
+  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+
 
   useEffect(() => {
     // Appwrite automatically appends `userId` & `secret` in query params
