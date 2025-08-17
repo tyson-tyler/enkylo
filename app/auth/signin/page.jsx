@@ -2,12 +2,45 @@
 
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { User, Mail, Lock } from "lucide-react"; // ✅ Icons
+import { User, Mail, Lock, Loader } from "lucide-react"; // ✅ Icons
 import Link from "next/link";
+import { LoginUser } from "@/store/LoginUser";
+import toast from "react-hot-toast";
+import { account } from "@/appwrite";
 
 const Page = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const handleLogin = async () => {
+    setLoading(true);
+    const res = await LoginUser(email, password);
+
+    if (!res.success) {
+      toast.error(res.message);
+    } else {
+      try {
+        const user = await account.get(); // 👈 fetch user info
+        if (!user.emailVerification) {
+          toast.error("Please verify your email before logging in.");
+          await account.deleteSession("current"); // 👈 logout
+        } else {
+          toast.success(" Login successful!");
+          console.log("Logged in:", res.session);
+
+          router.push("/dashboard");
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        toast.error("Something went wrong. Try again.");
+      }
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div className="flex flex-row-reverse h-screen">
       {/* Left side with full video (lg and above only) */}
@@ -81,7 +114,7 @@ const Page = () => {
           </motion.div>
 
           {/* Form */}
-          <motion.form
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
@@ -99,6 +132,8 @@ const Page = () => {
                 type="email"
                 className="w-full p-4 pl-10 rounded-lg bg-white/10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                 placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </motion.div>
 
@@ -109,6 +144,8 @@ const Page = () => {
             >
               <Lock className="absolute left-3 text-gray-400 w-5 h-5" />
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 className="w-full p-4 pl-10 rounded-lg bg-white/10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                 placeholder="Password"
@@ -120,11 +157,12 @@ const Page = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
-              className="w-full p-4 cursor-pointer rounded-lg bg-red-500 hover:bg-red-600 text-white font-semibold transition"
+              className="w-full p-4 cursor-pointer flex justify-center items-center rounded-lg bg-red-500 hover:bg-red-600 text-white font-semibold transition"
+              onClick={() => handleLogin()}
             >
-              Register
+              {loading ? <Loader className="w-5 h-5 animate-spin" /> : "Login"}
             </motion.button>
-          </motion.form>
+          </motion.div>
 
           {/* Divider */}
           <div className="flex items-center my-6">

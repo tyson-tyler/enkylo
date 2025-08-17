@@ -292,6 +292,7 @@ const Page = () => {
                   src={"/email.gif"}
                   width={400}
                   height={500}
+                  alt="hello"
                   className="w-[100px] h-[100px] md:w-[120px] md:h-[120px] lg:w-[160px] lg:h-[160px]"
                 />
               </motion.div>

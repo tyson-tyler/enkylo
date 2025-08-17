@@ -1,7 +1,7 @@
 "use client";
 
 import { account } from "@/appwrite";
-import { Loader } from "lucide-react";
+import { CheckCircle, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -29,7 +29,7 @@ export default function page() {
         setLoading(false);
         router.push("/dashboard");
       } catch (error) {
-        console.error("Verification error:", err);
+        console.error("Verification error:", error);
         setStatus("error");
       }
     };
