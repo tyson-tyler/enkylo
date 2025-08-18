@@ -9,11 +9,18 @@ import Link from "next/link";
 import { LoginUser } from "@/store/LoginUser";
 import toast from "react-hot-toast";
 import { account } from "@/appwrite";
+import { LoginWithGoogle } from "@/store/LoginWithGoogle";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleGoogle = async () => {
+    await LoginWithGoogle();
+  };
   const handleLogin = async () => {
     setLoading(true);
     const res = await LoginUser(email, password);
@@ -164,27 +171,27 @@ const Page = () => {
             </motion.button>
           </motion.div>
 
-          {/* Divider */}
-          <div className="flex items-center my-6">
+          {/* <div className="flex items-center my-6">
             <div className="flex-1 h-px bg-gray-600"></div>
             <span className="px-3 text-gray-400 text-sm">OR</span>
             <div className="flex-1 h-px bg-gray-600"></div>
           </div>
 
-          {/* Google Button */}
+     
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="flex items-center cursor-pointer justify-center gap-3 w-full p-4 rounded-lg bg-white text-gray-700 font-medium shadow-md hover:bg-gray-100 transition"
+            onClick={handleGoogle}
           >
             <Image
-              src="/google.svg" // 👉 Place a Google SVG in your /public folder
+              src="/google.svg" 
               alt="Google"
               width={20}
               height={20}
             />
             Continue with Google
-          </motion.button>
+          </motion.button> */}
 
           {/* Footer */}
           <motion.p

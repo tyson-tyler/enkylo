@@ -8,11 +8,17 @@ import { CiSearch } from "react-icons/ci";
 import { BsHeart } from "react-icons/bs";
 import { HiMenu, HiX } from "react-icons/hi";
 import { motion } from "framer-motion";
+import UserDropdown from "./Topgamegrid/dropdown";
+import { useAuth } from "@/context/AuthContext";
+import { getUserProfile } from "@/store/getUser";
+import { Loader } from "lucide-react";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { user, loading } = useAuth();
+  const [user1, setUser1] = useState(null);
 
   const navLink = [
     { id: 1, url: "/dashboard", title: "Home" },
@@ -30,6 +36,23 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleProfile = async () => {
+      if (!loading && user) {
+        console.log("User ID:", user.$id);
+
+        try {
+          const res = await getUserProfile(user.$id);
+          console.log(res);
+          setUser1(res);
+        } catch (error) {
+          console.log("User not found or error:", error);
+        }
+      }
+    };
+    handleProfile();
+  }, [loading, user]);
 
   return (
     <motion.nav
@@ -64,7 +87,7 @@ const Navbar = () => {
               <Link
                 key={item.id}
                 href={item.url}
-                className={`font-semibold uppercase py-1 hidden md:flex hover:text-white transition-colors ${
+                className={`font-semibold uppercase py-1 text-xs md:text-sm hidden md:flex hover:text-white transition-colors ${
                   isActive ? "text-white" : "text-gray-400"
                 }`}
               >
@@ -97,13 +120,15 @@ const Navbar = () => {
               1
             </span>
           </div>
-          <Image
-            src="/av.jpg"
-            alt="Avatar"
-            width={33}
-            height={33}
-            className="rounded-full w-[35px] h-[35px] object-cover"
-          />
+          <div className="w-10 h-10 rounded-full overflow-hidden">
+            <Image
+              src={user1?.photoURL || "/av.jpg"}
+              width={40}
+              height={40}
+              className="object-cover"
+              alt="Profile"
+            />
+          </div>
         </div>
 
         {/* Mobile Menu Button */}

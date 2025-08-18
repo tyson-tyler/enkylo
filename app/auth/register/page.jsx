@@ -8,6 +8,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { UserCreate } from "@/store/userCreate";
 import { account } from "@/appwrite";
+import { LoginWithGoogle } from "@/store/LoginWithGoogle";
 
 const Page = () => {
   const [username, setUsername] = useState("");
@@ -19,6 +20,10 @@ const Page = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [fileshow, setFileShow] = useState("");
   const fileInputRef = useRef(null);
+
+  const handleGoogle = async () => {
+    await LoginWithGoogle();
+  };
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleShow = (e) => {
@@ -311,22 +316,21 @@ const Page = () => {
             </div>
           )}
 
-          {/* Divider */}
-          <div className="flex items-center my-6">
+          {/* <div className="flex items-center my-6">
             <div className="flex-1 h-px bg-gray-600"></div>
             <span className="px-3 text-gray-400 text-sm">OR</span>
             <div className="flex-1 h-px bg-gray-600"></div>
           </div>
 
-          {/* Google Auth */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="flex items-center cursor-pointer justify-center gap-3 w-full p-4 rounded-lg bg-white text-gray-700 font-medium shadow-md hover:bg-gray-100 transition"
+            onSubmit={handleGoogle}
           >
             <Image src="/google.svg" alt="Google" width={20} height={20} />
             Continue with Google
-          </motion.button>
+          </motion.button> */}
 
           {/* Footer */}
           <motion.p

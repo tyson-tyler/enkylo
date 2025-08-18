@@ -7,6 +7,7 @@ const nextConfig = {
       "img.lum.dolimg.com",
       "pre07.deviantart.net",
       "image-5.uhdpaper.com",
+      "res.cloudinary.com",
     ],
   },
 };

@@ -1,55 +1,45 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Play, Info, Volume2, VolumeX } from "lucide-react";
-
-const games = [
-  {
-    video:
-      "https://res.cloudinary.com/dnia0cr41/video/upload/v1755132485/Untitled_video_-_Made_with_Clipchamp_n5ohrx.mp4",
-    title: "Tekken 7",
-    description:
-      "An intense 3D fighting game where martial arts legends clash in a global tournament. Master combos, learn each fighter’s story, and rise to the top as the ultimate champion.",
-  },
-  {
-    video:
-      "https://res.cloudinary.com/dnia0cr41/video/upload/v1755141701/Y2mate.Now_Street_Fighter_6_-_Meeting_Chun-Li_Scene_1080P_ndigui.mp4",
-    title: "Street Fighter",
-    description:
-      "The iconic arcade brawler returns with new fighters, improved mechanics, and cinematic battles. Unleash powerful special moves and prove your skill in every showdown.",
-  },
-  {
-    video:
-      "https://res.cloudinary.com/dnia0cr41/video/upload/v1755140499/Untitled_video_-_Made_with_Clipchamp_1_1_btcytj.mp4",
-    title: "Spider-Man 2",
-    description:
-      "Swing through New York City as Peter Parker and Miles Morales in a thrilling superhero adventure. Battle iconic villains and protect the city in an epic, action-packed story.",
-  },
-  {
-    video:
-      "https://res.cloudinary.com/dnia0cr41/video/upload/v1755135187/freecompress-2_gxfxt2.mp4",
-    title: "GTA 5",
-    description:
-      "Experience the sprawling city of Los Santos in an open-world adventure filled with crime, chaos, and opportunity. Switch between three unique protagonists, plan daring heists, and explore a living, breathing world at your own pace.",
-  },
-];
+import { getRandomBanner } from "@/store/getRandomBanner";
+import Image from "next/image";
 
 const MainHeader = () => {
   const [muted, setMuted] = useState(true);
-  const [current, setCurrent] = useState(null);
 
+  const [videoPrev, setVideoPrev] = useState(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * games.length);
-    setCurrent(randomIndex);
+    const handleVideo = async () => {
+      setLoading(true);
+      const videores = await getRandomBanner();
+      setVideoPrev(videores);
+      console.log(videores);
+      setLoading(false);
+    };
+    handleVideo();
   }, []);
 
   // Prevent rendering before random index is set
-  if (current === null) return null;
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Image
+          src={"/loading.gif"}
+          width={50}
+          height={50}
+          className="w-[50px] h-[50px] md:w-[100px] md:h-[100px] lg:w-[150px] lg:h-[150px]"
+          alt="hello"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Video Background */}
       <video
-        src={games[current].video}
+        src={videoPrev?.videoUrl}
         autoPlay
         muted={muted}
         loop
@@ -63,11 +53,11 @@ const MainHeader = () => {
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-end h-full pb-24 px-4 sm:px-8 lg:px-16 max-w-4xl mx-auto lg:mx-0 lg:items-start items-center text-center lg:text-left">
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold uppercase tracking-wider text-white px-4 py-2 rounded-md">
-          {games[current].title}
+          {videoPrev?.title}
         </h1>
 
         <p className="mt-3 sm:mt-4 text-gray-200 text-sm sm:text-lg lg:text-xl max-w-2xl leading-relaxed drop-shadow-lg">
-          {games[current].description}
+          {videoPrev?.desc}
         </p>
 
         <div className="mt-5 sm:mt-7 flex flex-wrap gap-3 justify-center lg:justify-start">
